@@ -40,6 +40,11 @@ public class MemberApiServlet extends HttpServlet {
                     obj.put("name", member.getName());
                     obj.put("email", member.getEmail());
                     obj.put("join_date", member.getJoinDate().toString());
+                    obj.put("ic_number", member.getIcNumber());
+                    obj.put("gender", member.getGender());
+                    obj.put("date_of_birth", member.getDateOfBirth().toString());
+                    obj.put("postcode", member.getPostcode());
+                    obj.put("town", member.getTown());
                     arr.put(obj);
                 }
                 
@@ -56,6 +61,11 @@ public class MemberApiServlet extends HttpServlet {
                         obj.put("name", member.getName());
                         obj.put("email", member.getEmail());
                         obj.put("join_date", member.getJoinDate().toString());
+                        obj.put("ic_number", member.getIcNumber());
+                        obj.put("gender", member.getGender());
+                        obj.put("date_of_birth", member.getDateOfBirth().toString());
+                        obj.put("postcode", member.getPostcode());
+                        obj.put("town", member.getTown());
                         resp.getWriter().write(obj.toString());
                     } else {
                         resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -90,11 +100,21 @@ public class MemberApiServlet extends HttpServlet {
             String name = body.getString("name");
             String email = body.getString("email");
             String joinDateStr = body.getString("join_date");
+            String icNumber = body.getString("ic_number");
+            String gender = body.getString("gender");
+            String dateOfBirthStr = body.getString("date_of_birth");
+            String postcode = body.getString("postcode");
+            String town = body.getString("town");
             
             Member member = new Member();
             member.setName(name);
             member.setEmail(email);
             member.setJoinDate(Date.valueOf(joinDateStr));
+            member.setIcNumber(icNumber);
+            member.setGender(gender);
+            member.setDateOfBirth(Date.valueOf(dateOfBirthStr));
+            member.setPostcode(postcode);
+            member.setTown(town);
             
             int id = memberService.addMember(member);
             
@@ -138,12 +158,22 @@ public class MemberApiServlet extends HttpServlet {
             String name = body.getString("name");
             String email = body.getString("email");
             String joinDateStr = body.getString("join_date");
+            String icNumber = body.getString("ic_number");
+            String gender = body.getString("gender");
+            String dateOfBirthStr = body.getString("date_of_birth");
+            String postcode = body.getString("postcode");
+            String town = body.getString("town");
             
             Member member = new Member();
             member.setId(id);
             member.setName(name);
             member.setEmail(email);
             member.setJoinDate(Date.valueOf(joinDateStr));
+            member.setIcNumber(icNumber);
+            member.setGender(gender);
+            member.setDateOfBirth(Date.valueOf(dateOfBirthStr));
+            member.setPostcode(postcode);
+            member.setTown(town);
             
             boolean updated = memberService.updateMember(member);
             

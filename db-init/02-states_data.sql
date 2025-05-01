@@ -1,0 +1,16 @@
+INSERT INTO states (state_code, state_name) VALUES ('JHR', 'Johor') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('KDH', 'Kedah') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('KTN', 'Kelantan') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('KUL', 'Wilayah Persekutuan Kuala Lumpur') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('LBN', 'Wilayah Persekutuan Labuan') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('MLK', 'Melaka') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('NSN', 'Negeri Sembilan') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('PHG', 'Pahang') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('PJY', 'Wilayah Persekutuan Putra Jaya') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('PLS', 'Perlis') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('PNG', 'Pulau Pinang') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('PRK', 'Perak') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('SBH', 'Sabah') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('SGR', 'Selangor') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('SRW', 'Sarawak') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);
+INSERT INTO states (state_code, state_name) VALUES ('TRG', 'Terengganu') ON DUPLICATE KEY UPDATE state_name=VALUES(state_name);

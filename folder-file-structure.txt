@@ -4,11 +4,15 @@ j2ee-crud
 ├── .gitignore
 ├── .vscode
 │   └── settings.json
+├── db-init
+│   ├── 01-init.sql
+│   ├── 02-states_data.sql
+│   └── 03-postcodes_data.sql
 ├── docker-compose.yml
 ├── Dockerfile
 ├── folder-file-structure.txt
-├── init.sql
 ├── pom.xml
+├── README.md
 ├── src
 │   └── main
 │       ├── java
@@ -16,15 +20,27 @@ j2ee-crud
 │       │       └── example
 │       │           ├── controller
 │       │           │   ├── MemberApiServlet.java
-│       │           │   └── MemberServlet.java
+│       │           │   ├── MemberServlet.java
+│       │           │   ├── PostcodeApiServlet.java
+│       │           │   └── StateApiServlet.java
 │       │           ├── dao
 │       │           │   ├── MemberDAO.java
-│       │           │   └── MemberDAOImpl.java
+│       │           │   ├── MemberDAOImpl.java
+│       │           │   ├── PostcodeDAO.java
+│       │           │   ├── PostcodeDAOImpl.java
+│       │           │   ├── StateDAO.java
+│       │           │   └── StateDAOImpl.java
 │       │           ├── model
-│       │           │   └── Member.java
+│       │           │   ├── Member.java
+│       │           │   ├── Postcode.java
+│       │           │   └── State.java
 │       │           ├── service
 │       │           │   ├── MemberService.java
-│       │           │   └── MemberServiceImpl.java
+│       │           │   ├── MemberServiceImpl.java
+│       │           │   ├── PostcodeService.java
+│       │           │   ├── PostcodeServiceImpl.java
+│       │           │   ├── StateService.java
+│       │           │   └── StateServiceImpl.java
 │       │           └── util
 │       │               └── DBUtil.java
 │       └── webapp
@@ -41,15 +57,27 @@ j2ee-crud
     │       └── example
     │           ├── controller
     │           │   ├── MemberApiServlet.class
-    │           │   └── MemberServlet.class
+    │           │   ├── MemberServlet.class
+    │           │   ├── PostcodeApiServlet.class
+    │           │   └── StateApiServlet.class
     │           ├── dao
     │           │   ├── MemberDAO.class
-    │           │   └── MemberDAOImpl.class
+    │           │   ├── MemberDAOImpl.class
+    │           │   ├── PostcodeDAO.class
+    │           │   ├── PostcodeDAOImpl.class
+    │           │   ├── StateDAO.class
+    │           │   └── StateDAOImpl.class
     │           ├── model
-    │           │   └── Member.class
+    │           │   ├── Member.class
+    │           │   ├── Postcode.class
+    │           │   └── State.class
     │           ├── service
     │           │   ├── MemberService.class
-    │           │   └── MemberServiceImpl.class
+    │           │   ├── MemberServiceImpl.class
+    │           │   ├── PostcodeService.class
+    │           │   ├── PostcodeServiceImpl.class
+    │           │   ├── StateService.class
+    │           │   └── StateServiceImpl.class
     │           └── util
     │               └── DBUtil.class
     └── test-classes
