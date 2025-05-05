@@ -11,14 +11,53 @@ j2ee-crud
 ├── docker-compose.yml
 ├── Dockerfile
 ├── folder-file-structure.txt
+├── frontend
+│   ├── .gitignore
+│   ├── .postcssrc.json
+│   ├── angular.json
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   └── favicon.ico
+│   ├── README.md
+│   ├── src
+│   │   ├── app
+│   │   │   ├── app.component.html
+│   │   │   ├── app.component.scss
+│   │   │   ├── app.component.spec.ts
+│   │   │   ├── app.component.ts
+│   │   │   ├── app.config.ts
+│   │   │   ├── app.routes.ts
+│   │   │   ├── components
+│   │   │   │   ├── app.config.ts
+│   │   │   │   ├── app.footer.ts
+│   │   │   │   ├── app.topbar.ts
+│   │   │   │   └── dashboard
+│   │   │   │       ├── productoverviewwidget.ts
+│   │   │   │       ├── recentactivitywidget.ts
+│   │   │   │       ├── salestrendwidget.ts
+│   │   │   │       └── statswidget.ts
+│   │   │   └── service
+│   │   │       └── layout.service.ts
+│   │   ├── index.html
+│   │   ├── main.ts
+│   │   └── styles.scss
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   └── tsconfig.spec.json
 ├── pom.xml
 ├── README.md
+├── scripts
+│   └── test_api.sh
 ├── src
 │   └── main
 │       ├── java
 │       │   └── com
 │       │       └── example
 │       │           ├── controller
+│       │           │   ├── AuthApiServlet.java
 │       │           │   ├── MemberApiServlet.java
 │       │           │   ├── MemberServlet.java
 │       │           │   ├── PostcodeApiServlet.java
@@ -29,11 +68,14 @@ j2ee-crud
 │       │           │   ├── PostcodeDAO.java
 │       │           │   ├── PostcodeDAOImpl.java
 │       │           │   ├── StateDAO.java
-│       │           │   └── StateDAOImpl.java
+│       │           │   ├── StateDAOImpl.java
+│       │           │   ├── UserDAO.java
+│       │           │   └── UserDAOImpl.java
 │       │           ├── model
 │       │           │   ├── Member.java
 │       │           │   ├── Postcode.java
-│       │           │   └── State.java
+│       │           │   ├── State.java
+│       │           │   └── User.java
 │       │           ├── service
 │       │           │   ├── MemberService.java
 │       │           │   ├── MemberServiceImpl.java
@@ -42,7 +84,10 @@ j2ee-crud
 │       │           │   ├── StateService.java
 │       │           │   └── StateServiceImpl.java
 │       │           └── util
-│       │               └── DBUtil.java
+│       │               ├── AuthUtil.java
+│       │               ├── DBUtil.java
+│       │               ├── JwtUtil.java
+│       │               └── PasswordUtil.java
 │       └── webapp
 │           ├── index.jsp
 │           └── WEB-INF
@@ -56,6 +101,7 @@ j2ee-crud
     │   └── com
     │       └── example
     │           ├── controller
+    │           │   ├── AuthApiServlet.class
     │           │   ├── MemberApiServlet.class
     │           │   ├── MemberServlet.class
     │           │   ├── PostcodeApiServlet.class
@@ -66,11 +112,14 @@ j2ee-crud
     │           │   ├── PostcodeDAO.class
     │           │   ├── PostcodeDAOImpl.class
     │           │   ├── StateDAO.class
-    │           │   └── StateDAOImpl.class
+    │           │   ├── StateDAOImpl.class
+    │           │   ├── UserDAO.class
+    │           │   └── UserDAOImpl.class
     │           ├── model
     │           │   ├── Member.class
     │           │   ├── Postcode.class
-    │           │   └── State.class
+    │           │   ├── State.class
+    │           │   └── User.class
     │           ├── service
     │           │   ├── MemberService.class
     │           │   ├── MemberServiceImpl.class
@@ -79,5 +128,8 @@ j2ee-crud
     │           │   ├── StateService.class
     │           │   └── StateServiceImpl.class
     │           └── util
-    │               └── DBUtil.class
+    │               ├── AuthUtil.class
+    │               ├── DBUtil.class
+    │               ├── JwtUtil.class
+    │               └── PasswordUtil.class
     └── test-classes

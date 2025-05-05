@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.model.Member;
 import com.example.service.MemberService;
 import com.example.service.MemberServiceImpl;
+import com.example.util.AuthUtil;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -25,6 +26,7 @@ public class MemberApiServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        if (AuthUtil.authenticate(req, resp) == null) return;
         resp.setContentType("application/json");
         String pathInfo = req.getPathInfo();
         
@@ -83,6 +85,7 @@ public class MemberApiServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        if (AuthUtil.authenticate(req, resp) == null) return;
         resp.setContentType("application/json");
         
         try {
@@ -133,6 +136,7 @@ public class MemberApiServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        if (AuthUtil.authenticate(req, resp) == null) return;
         resp.setContentType("application/json");
         String pathInfo = req.getPathInfo();
         
@@ -191,6 +195,7 @@ public class MemberApiServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        if (AuthUtil.authenticate(req, resp) == null) return;
         resp.setContentType("application/json");
         String pathInfo = req.getPathInfo();
         

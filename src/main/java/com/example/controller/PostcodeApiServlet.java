@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.model.Postcode;
 import com.example.service.PostcodeService;
 import com.example.service.PostcodeServiceImpl;
+import com.example.util.AuthUtil;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -21,6 +22,7 @@ public class PostcodeApiServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        if (AuthUtil.authenticate(req, resp) == null) return;
         resp.setContentType("application/json");
         try {
             List<Postcode> postcodes = postcodeService.getAllPostcodes();

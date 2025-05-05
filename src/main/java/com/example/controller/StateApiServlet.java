@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.model.State;
 import com.example.service.StateService;
 import com.example.service.StateServiceImpl;
+import com.example.util.AuthUtil;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -21,6 +22,7 @@ public class StateApiServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        if (AuthUtil.authenticate(req, resp) == null) return;
         resp.setContentType("application/json");
         try {
             List<State> states = stateService.getAllStates();
