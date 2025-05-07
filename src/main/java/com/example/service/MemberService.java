@@ -9,4 +9,8 @@ public interface MemberService {
     int addMember(Member member);
     boolean updateMember(Member member);
     boolean deleteMember(int id);
+
+    // Pagination support
+    List<Member> getMembersPaginated(int pageIndex, int pageSize);
+    int getMembersCount();
 }

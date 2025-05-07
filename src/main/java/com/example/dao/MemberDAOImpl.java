@@ -129,4 +129,49 @@ public class MemberDAOImpl implements MemberDAO {
             return rowsDeleted > 0;
         }
     }
+
+    @Override
+    public List<Member> getMembersPaginated(int pageIndex, int pageSize) throws SQLException {
+        List<Member> members = new ArrayList<>();
+        String sql = "SELECT * FROM members ORDER BY id LIMIT ? OFFSET ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, pageSize);
+            ps.setInt(2, pageIndex * pageSize);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Member member = new Member(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getDate("join_date"),
+                        rs.getString("ic_number"),
+                        rs.getString("gender"),
+                        rs.getDate("date_of_birth"),
+                        rs.getString("postcode"),
+                        rs.getString("town")
+                    );
+                    members.add(member);
+                }
+            }
+        }
+
+        return members;
+    }
+
+    @Override
+    public int getMembersCount() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM members";
+        try (Connection conn = DBUtil.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 }

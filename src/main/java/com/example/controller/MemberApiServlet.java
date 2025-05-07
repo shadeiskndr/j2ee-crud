@@ -29,13 +29,25 @@ public class MemberApiServlet extends HttpServlet {
         if (AuthUtil.authenticate(req, resp) == null) return;
         resp.setContentType("application/json");
         String pathInfo = req.getPathInfo();
-        
+
         try {
             if (pathInfo == null || pathInfo.equals("/")) {
-                // List all members
-                List<Member> members = memberService.getAllMembers();
+                // Pagination parameters
+                int pageSize = 10;
+                int pageIndex = 0;
+                String pageSizeParam = req.getParameter("pageSize");
+                String pageIndexParam = req.getParameter("pageIndex");
+                if (pageSizeParam != null) {
+                    try { pageSize = Integer.parseInt(pageSizeParam); } catch (NumberFormatException ignored) {}
+                }
+                if (pageIndexParam != null) {
+                    try { pageIndex = Integer.parseInt(pageIndexParam); } catch (NumberFormatException ignored) {}
+                }
+
+                List<Member> members = memberService.getMembersPaginated(pageIndex, pageSize);
+                int totalCount = memberService.getMembersCount();
+
                 JSONArray arr = new JSONArray();
-                
                 for (Member member : members) {
                     JSONObject obj = new JSONObject();
                     obj.put("id", member.getId());
@@ -49,8 +61,14 @@ public class MemberApiServlet extends HttpServlet {
                     obj.put("town", member.getTown());
                     arr.put(obj);
                 }
-                
-                resp.getWriter().write(arr.toString());
+
+                JSONObject result = new JSONObject();
+                result.put("members", arr);
+                result.put("totalCount", totalCount);
+                result.put("pageIndex", pageIndex);
+                result.put("pageSize", pageSize);
+
+                resp.getWriter().write(result.toString());
             } else {
                 // Get member by ID
                 try {
