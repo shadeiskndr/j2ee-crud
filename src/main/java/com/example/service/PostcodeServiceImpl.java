@@ -23,4 +23,44 @@ public class PostcodeServiceImpl implements PostcodeService {
             return new ArrayList<>();
         }
     }
+
+    @Override
+    public List<Postcode> getPostcodesPaginated(int pageIndex, int pageSize) {
+        try {
+            return postcodeDAO.getPostcodesPaginated(pageIndex, pageSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public int getPostcodesCount() {
+        try {
+            return postcodeDAO.getPostcodesCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public List<Postcode> searchPostcodes(String search, int pageIndex, int pageSize) {
+        try {
+            return postcodeDAO.searchPostcodes(search, pageIndex, pageSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public int getSearchPostcodesCount(String search) {
+        try {
+            return postcodeDAO.getSearchPostcodesCount(search);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

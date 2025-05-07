@@ -25,7 +25,29 @@ public class PostcodeApiServlet extends HttpServlet {
         if (AuthUtil.authenticate(req, resp) == null) return;
         resp.setContentType("application/json");
         try {
-            List<Postcode> postcodes = postcodeService.getAllPostcodes();
+            int pageSize = 10;
+            int pageIndex = 0;
+            String pageSizeParam = req.getParameter("pageSize");
+            String pageIndexParam = req.getParameter("pageIndex");
+            if (pageSizeParam != null) {
+                try { pageSize = Integer.parseInt(pageSizeParam); } catch (NumberFormatException ignored) {}
+            }
+            if (pageIndexParam != null) {
+                try { pageIndex = Integer.parseInt(pageIndexParam); } catch (NumberFormatException ignored) {}
+            }
+    
+            String search = req.getParameter("search");
+            List<Postcode> postcodes;
+            int totalCount;
+    
+            if (search != null && !search.trim().isEmpty()) {
+                postcodes = postcodeService.searchPostcodes(search.trim(), pageIndex, pageSize);
+                totalCount = postcodeService.getSearchPostcodesCount(search.trim());
+            } else {
+                postcodes = postcodeService.getPostcodesPaginated(pageIndex, pageSize);
+                totalCount = postcodeService.getPostcodesCount();
+            }
+    
             JSONArray arr = new JSONArray();
             for (Postcode pc : postcodes) {
                 JSONObject obj = new JSONObject();
@@ -34,10 +56,17 @@ public class PostcodeApiServlet extends HttpServlet {
                 obj.put("state_code", pc.getStateCode());
                 arr.put(obj);
             }
-            resp.getWriter().write(arr.toString());
+    
+            JSONObject result = new JSONObject();
+            result.put("postcodes", arr);
+            result.put("totalCount", totalCount);
+            result.put("pageIndex", pageIndex);
+            result.put("pageSize", pageSize);
+    
+            resp.getWriter().write(result.toString());
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
         }
-    }
+    }    
 }
