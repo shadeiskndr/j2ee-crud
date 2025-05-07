@@ -33,19 +33,37 @@ public class MemberApiServlet extends HttpServlet {
         try {
             if (pathInfo == null || pathInfo.equals("/")) {
                 // Pagination parameters
-                int pageSize = 10;
                 int pageIndex = 0;
-                String pageSizeParam = req.getParameter("pageSize");
+                int pageSize = 10;
+                int offset = 0;
+
                 String pageIndexParam = req.getParameter("pageIndex");
+                String pageSizeParam = req.getParameter("pageSize");
+                String startParam = req.getParameter("start");
+
                 if (pageSizeParam != null) {
                     try { pageSize = Integer.parseInt(pageSizeParam); } catch (NumberFormatException ignored) {}
                 }
-                if (pageIndexParam != null) {
+                if (startParam != null) {
+                    try { offset = Integer.parseInt(startParam); } catch (NumberFormatException ignored) {}
+                } else if (pageIndexParam != null) {
                     try { pageIndex = Integer.parseInt(pageIndexParam); } catch (NumberFormatException ignored) {}
+                    offset = pageIndex * pageSize;
                 }
 
-                List<Member> members = memberService.getMembersPaginated(pageIndex, pageSize);
-                int totalCount = memberService.getMembersCount();
+                // Search and sorting
+                String search = req.getParameter("search");
+                String sortField = req.getParameter("sortField");
+                String sortOrder = req.getParameter("sortOrder");
+
+                // Default sort: join_date desc
+                if (sortField == null || sortField.isEmpty()) sortField = "join_date";
+                if (sortOrder == null || sortOrder.isEmpty()) sortOrder = "desc";
+
+                List<Member> members = memberService.getMembersPaginated(
+                    offset, pageSize, search, sortField, sortOrder
+                );
+                int totalCount = memberService.getMembersCount(search);
 
                 JSONArray arr = new JSONArray();
                 for (Member member : members) {
@@ -65,16 +83,19 @@ public class MemberApiServlet extends HttpServlet {
                 JSONObject result = new JSONObject();
                 result.put("members", arr);
                 result.put("totalCount", totalCount);
-                result.put("pageIndex", pageIndex);
+                result.put("offset", offset);
                 result.put("pageSize", pageSize);
+                result.put("search", search != null ? search : JSONObject.NULL);
+                result.put("sortField", sortField);
+                result.put("sortOrder", sortOrder);
 
                 resp.getWriter().write(result.toString());
             } else {
-                // Get member by ID
+                // ... unchanged: get member by ID ...
                 try {
                     int id = Integer.parseInt(pathInfo.substring(1));
                     Member member = memberService.getMemberById(id);
-                    
+
                     if (member != null) {
                         JSONObject obj = new JSONObject();
                         obj.put("id", member.getId());

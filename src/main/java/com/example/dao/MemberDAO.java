@@ -11,7 +11,13 @@ public interface MemberDAO {
     boolean updateMember(Member member) throws SQLException;
     boolean deleteMember(int id) throws SQLException;
 
-    // Pagination support
-    List<Member> getMembersPaginated(int pageIndex, int pageSize) throws SQLException;
-    int getMembersCount() throws SQLException;
+    // Pagination, search, and sorting support
+    List<Member> getMembersPaginated(
+        int offset, int pageSize,
+        String search,
+        String sortField,
+        String sortOrder
+    ) throws SQLException;
+
+    int getMembersCount(String search) throws SQLException;
 }

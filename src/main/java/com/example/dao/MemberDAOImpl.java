@@ -131,15 +131,49 @@ public class MemberDAOImpl implements MemberDAO {
     }
 
     @Override
-    public List<Member> getMembersPaginated(int pageIndex, int pageSize) throws SQLException {
+    public List<Member> getMembersPaginated(
+            int offset, int pageSize,
+            String search,
+            String sortField,
+            String sortOrder
+    ) throws SQLException {
         List<Member> members = new ArrayList<>();
-        String sql = "SELECT * FROM members ORDER BY id LIMIT ? OFFSET ?";
+
+        final String[] allowedSortFields = {
+            "id", "name", "email", "join_date", "ic_number", "gender", "date_of_birth", "postcode", "town"
+        };
+        boolean validSortField = false;
+        for (String f : allowedSortFields) {
+            if (f.equalsIgnoreCase(sortField)) {
+                validSortField = true;
+                break;
+            }
+        }
+        if (!validSortField) sortField = "join_date";
+        if (!"asc".equalsIgnoreCase(sortOrder)) sortOrder = "desc";
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM members");
+        List<Object> params = new ArrayList<>();
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" WHERE ");
+            sql.append("(name LIKE ? OR email LIKE ? OR ic_number LIKE ? OR gender LIKE ? OR postcode LIKE ? OR town LIKE ?)");
+            String like = "%" + search.trim() + "%";
+            for (int i = 0; i < 6; i++) params.add(like);
+        }
+
+        sql.append(" ORDER BY ").append(sortField).append(" ").append(sortOrder);
+        sql.append(" LIMIT ? OFFSET ?");
 
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
 
-            ps.setInt(1, pageSize);
-            ps.setInt(2, pageIndex * pageSize);
+            int idx = 1;
+            for (Object param : params) {
+                ps.setString(idx++, (String) param);
+            }
+            ps.setInt(idx++, pageSize);
+            ps.setInt(idx, offset);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -163,13 +197,29 @@ public class MemberDAOImpl implements MemberDAO {
     }
 
     @Override
-    public int getMembersCount() throws SQLException {
-        String sql = "SELECT COUNT(*) FROM members";
+    public int getMembersCount(String search) throws SQLException {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM members");
+        List<Object> params = new ArrayList<>();
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" WHERE ");
+            sql.append("(name LIKE ? OR email LIKE ? OR ic_number LIKE ? OR gender LIKE ? OR postcode LIKE ? OR town LIKE ?)");
+            String like = "%" + search.trim() + "%";
+            for (int i = 0; i < 6; i++) params.add(like);
+        }
+
         try (Connection conn = DBUtil.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if (rs.next()) {
-                return rs.getInt(1);
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            int idx = 1;
+            for (Object param : params) {
+                ps.setString(idx++, (String) param);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
         }
         return 0;

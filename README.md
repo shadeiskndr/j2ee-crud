@@ -173,27 +173,82 @@ If the token is missing or invalid, the API responds with HTTP 401 Unauthorized.
 
 The application provides a RESTful API at the base path `/api/members`:
 
-- **`GET /api/members`**: List all members.
-- **`GET /api/members/{id}`**: Get a specific member by ID.
-- **`POST /api/members`**: Create a new member.
-- **`PUT /api/members/{id}`**: Update an existing member by ID.
-- **`DELETE /api/members/{id}`**: Delete a member by ID.
+#### **GET /api/members** — List Members
 
-#### Example API Request (Create Member)
+Supports pagination, search, and sorting.
+
+**Query Parameters:**
+
+- `pageIndex` (integer, zero-based): Page number (default: 0)
+- `pageSize` (integer): Number of records per page (default: 10)
+- `start` (integer): Offset (alternative to pageIndex, zero-based)
+- `search` (string): Global search on `name`, `email`, `ic_number`, `gender`, `postcode`, `town`
+- `sortField` (string): Field to sort by (default: `join_date`)
+- `sortOrder` (string): `asc` or `desc` (default: `desc`)
+
+**Examples:**
+
+- First page (default):
+  ```
+  GET /api/members
+  ```
+- Second page, 20 per page:
+  ```
+  GET /api/members?pageIndex=1&pageSize=20
+  ```
+- Offset-based:
+  ```
+  GET /api/members?start=50&pageSize=10
+  ```
+- Search:
+  ```
+  GET /api/members?search=alice
+  ```
+- Sort by name ascending:
+  ```
+  GET /api/members?sortField=name&sortOrder=asc
+  ```
+- Combined:
+  ```
+  GET /api/members?pageIndex=0&pageSize=10&search=selangor&sortField=email&sortOrder=desc
+  ```
+
+**Response:**
 
 ```json
-// POST /api/members
 {
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "join_date": "2023-01-15",
-  "ic_number": "900101-14-5678",
-  "gender": "Male",
-  "date_of_birth": "1990-01-01",
-  "postcode": "01000",
-  "town": "Kangar"
+  "members": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "email": "alice@example.com",
+      "join_date": "2024-05-01",
+      "ic_number": "900101-14-5678",
+      "gender": "Female",
+      "date_of_birth": "1990-01-01",
+      "postcode": "01000",
+      "town": "Kangar"
+    }
+    // ...
+  ],
+  "totalCount": 95,
+  "offset": 20,
+  "pageSize": 10,
+  "search": "alice",
+  "sortField": "name",
+  "sortOrder": "asc"
 }
 ```
+
+#### **GET /api/members/{id}** — Get a specific member by ID
+
+#### **POST /api/members** — Create a new member
+
+#### **PUT /api/members/{id}** — Update an existing member by ID
+
+#### **DELETE /api/members/{id}** — Delete a member by ID
+
+---
 
 ### Postcode API
 

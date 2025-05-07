@@ -10,7 +10,12 @@ public interface MemberService {
     boolean updateMember(Member member);
     boolean deleteMember(int id);
 
-    // Pagination support
-    List<Member> getMembersPaginated(int pageIndex, int pageSize);
-    int getMembersCount();
+    // Pagination, search, and sorting support
+    List<Member> getMembersPaginated(
+        int offset, int pageSize,
+        String search,
+        String sortField,
+        String sortOrder
+    );
+    int getMembersCount(String search);
 }

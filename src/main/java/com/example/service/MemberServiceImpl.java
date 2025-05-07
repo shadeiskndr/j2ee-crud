@@ -67,9 +67,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> getMembersPaginated(int pageIndex, int pageSize) {
+    public List<Member> getMembersPaginated(
+            int offset, int pageSize,
+            String search,
+            String sortField,
+            String sortOrder
+    ) {
         try {
-            return memberDAO.getMembersPaginated(pageIndex, pageSize);
+            return memberDAO.getMembersPaginated(offset, pageSize, search, sortField, sortOrder);
         } catch (SQLException e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -77,9 +82,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int getMembersCount() {
+    public int getMembersCount(String search) {
         try {
-            return memberDAO.getMembersCount();
+            return memberDAO.getMembersCount(search);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
