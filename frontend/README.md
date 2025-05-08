@@ -1,59 +1,75 @@
-# PrimengQuickstart
+# Angular Frontend (PrimeNG Tailwind Quickstart)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
+This is the Angular frontend for the **J2EE Membership Management System**. It provides a modern UI for member management, authentication, and Malaysian postcode/state lookup, communicating with a Jakarta EE backend via RESTful APIs.
 
-## Development server
+---
 
-To start a local development server, run:
+## Features
+
+- **User Authentication:** Register and login using JWT-based authentication.
+- **Member Management:** Create, read, update, and delete member records.
+- **Malaysian Data Integration:** Lookup for postcodes and states.
+- **Protected Routes:** Only authenticated users can access member and dashboard pages.
+- **Error Handling:** Automatic logout and redirect to login on authentication errors.
+- **Responsive UI:** Built with PrimeNG and Angular standalone components.
+
+---
+
+### Main API Endpoints Used
+
+| Endpoint             | Method | Description                      |
+| -------------------- | ------ | -------------------------------- |
+| `/api/auth/register` | POST   | Register a new user              |
+| `/api/auth/login`    | POST   | Login and receive JWT            |
+| `/api/members`       | GET    | List members (pagination/search) |
+| `/api/members/:id`   | GET    | Get member by ID                 |
+| `/api/members`       | POST   | Create a new member              |
+| `/api/members/:id`   | PUT    | Update member                    |
+| `/api/members/:id`   | DELETE | Delete member                    |
+| `/api/postcodes`     | GET    | List/search postcodes            |
+| `/api/states`        | GET    | List all states                  |
+
+---
+
+## Authentication & Route Protection
+
+- The app uses a functional HTTP interceptor (`authInterceptor`) to:
+  - Attach the JWT token to all outgoing API requests.
+  - Handle 401 Unauthorized responses by logging out and redirecting to `/login`.
+- Route guards (`authGuard`) ensure only authenticated users can access protected pages.
+
+---
+
+## API Integration
+
+- All API requests use `/api/...` endpoints.
+- In development, requests are proxied to the backend using `proxy.conf.json`.
+- In production, Nginx (see `nginx.conf`) proxies `/api` to the backend.
+- **JWT Authentication:**
+  - On login, a JWT token is stored in `localStorage` and automatically attached to all outgoing API requests via an HTTP interceptor.
+  - If a 401 Unauthorized error is received from the backend, the user is logged out and redirected to the login page.
+
+---
+
+### Development server (with API proxy)
+
+Start the backend (e.g., `docker compose up` from project root), then:
 
 ```bash
-ng serve
+npm run dev
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- App runs at [http://localhost:4200](http://localhost:4200)
+- API requests to `/api` are proxied to the backend
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Building for Production
 
 ```bash
-ng generate component component-name
+npm run build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Build artifacts will be stored in the `dist/` directory.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---

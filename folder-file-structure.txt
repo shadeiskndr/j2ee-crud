@@ -39,8 +39,36 @@ j2ee-crud
 │   │   │   │       ├── recentactivitywidget.ts
 │   │   │   │       ├── salestrendwidget.ts
 │   │   │   │       └── statswidget.ts
+│   │   │   ├── guards
+│   │   │   │   └── auth.guard.ts
+│   │   │   ├── interceptors
+│   │   │   │   └── auth.interceptor.ts
+│   │   │   ├── models
+│   │   │   │   ├── member.model.ts
+│   │   │   │   ├── postcode.model.ts
+│   │   │   │   ├── state.model.ts
+│   │   │   │   └── user.model.ts
+│   │   │   ├── pages
+│   │   │   │   ├── dashboard
+│   │   │   │   │   ├── dashboard.component.html
+│   │   │   │   │   └── dashboard.component.ts
+│   │   │   │   ├── login
+│   │   │   │   │   ├── login.component.html
+│   │   │   │   │   └── login.component.ts
+│   │   │   │   ├── members
+│   │   │   │   │   ├── member-form.component.html
+│   │   │   │   │   ├── member-form.component.ts
+│   │   │   │   │   ├── members-list.component.html
+│   │   │   │   │   └── members-list.component.ts
+│   │   │   │   └── register
+│   │   │   │       ├── register.component.html
+│   │   │   │       └── register.component.ts
 │   │   │   └── service
-│   │   │       └── layout.service.ts
+│   │   │       ├── auth.service.ts
+│   │   │       ├── layout.service.ts
+│   │   │       ├── member.service.ts
+│   │   │       ├── postcode.service.ts
+│   │   │       └── state.service.ts
 │   │   ├── index.html
 │   │   ├── main.ts
 │   │   └── styles.scss
