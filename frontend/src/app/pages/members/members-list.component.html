@@ -28,17 +28,108 @@
     [rows]="rows"
     [paginator]="false"
     class="mb-4"
+    stripedRows
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [scrollable]="true"
   >
     <ng-template pTemplate="header">
       <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>IC Number</th>
-        <th>Gender</th>
-        <th>Date of Birth</th>
-        <th>Postcode</th>
-        <th>Town</th>
-        <th>Join Date</th>
+        <th (click)="onSort('name')" style="cursor: pointer">
+          Name
+          <span *ngIf="sortField === 'name'">
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-sort-amount-up-alt': sortOrder === 'asc',
+                'pi-sort-amount-down': sortOrder === 'desc'
+              }"
+            ></i>
+          </span>
+        </th>
+        <th (click)="onSort('email')" style="cursor: pointer">
+          Email
+          <span *ngIf="sortField === 'email'">
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-sort-amount-up-alt': sortOrder === 'asc',
+                'pi-sort-amount-down': sortOrder === 'desc'
+              }"
+            ></i>
+          </span>
+        </th>
+        <th (click)="onSort('ic_number')" style="cursor: pointer">
+          IC Number
+          <span *ngIf="sortField === 'ic_number'">
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-sort-amount-up-alt': sortOrder === 'asc',
+                'pi-sort-amount-down': sortOrder === 'desc'
+              }"
+            ></i>
+          </span>
+        </th>
+        <th (click)="onSort('gender')" style="cursor: pointer">
+          Gender
+          <span *ngIf="sortField === 'gender'">
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-sort-amount-up-alt': sortOrder === 'asc',
+                'pi-sort-amount-down': sortOrder === 'desc'
+              }"
+            ></i>
+          </span>
+        </th>
+        <th (click)="onSort('date_of_birth')" style="cursor: pointer">
+          Date of Birth
+          <span *ngIf="sortField === 'date_of_birth'">
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-sort-amount-up-alt': sortOrder === 'asc',
+                'pi-sort-amount-down': sortOrder === 'desc'
+              }"
+            ></i>
+          </span>
+        </th>
+        <th (click)="onSort('postcode')" style="cursor: pointer">
+          Postcode
+          <span *ngIf="sortField === 'postcode'">
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-sort-amount-up-alt': sortOrder === 'asc',
+                'pi-sort-amount-down': sortOrder === 'desc'
+              }"
+            ></i>
+          </span>
+        </th>
+        <th (click)="onSort('town')" style="cursor: pointer">
+          Town
+          <span *ngIf="sortField === 'town'">
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-sort-amount-up-alt': sortOrder === 'asc',
+                'pi-sort-amount-down': sortOrder === 'desc'
+              }"
+            ></i>
+          </span>
+        </th>
+        <th (click)="onSort('join_date')" style="cursor: pointer">
+          Join Date
+          <span *ngIf="sortField === 'join_date'">
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-sort-amount-up-alt': sortOrder === 'asc',
+                'pi-sort-amount-down': sortOrder === 'desc'
+              }"
+            ></i>
+          </span>
+        </th>
         <th>Actions</th>
       </tr>
     </ng-template>

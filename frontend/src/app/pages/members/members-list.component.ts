@@ -32,6 +32,10 @@ export class MembersListComponent implements OnInit {
   search = "";
   loading = false;
 
+  // Sorting state
+  sortField: string = "join_date";
+  sortOrder: "asc" | "desc" = "desc";
+
   constructor(private memberService: MemberService, private router: Router) {}
 
   ngOnInit() {
@@ -45,6 +49,8 @@ export class MembersListComponent implements OnInit {
         pageIndex: Math.floor(this.first / this.rows),
         pageSize: this.rows,
         search: this.search,
+        sortField: this.sortField,
+        sortOrder: this.sortOrder,
       })
       .subscribe({
         next: (res) => {
@@ -66,6 +72,17 @@ export class MembersListComponent implements OnInit {
 
   onSearch() {
     this.first = 0;
+    this.loadMembers();
+  }
+
+  onSort(field: string) {
+    if (this.sortField === field) {
+      // Toggle sort order
+      this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+    } else {
+      this.sortField = field;
+      this.sortOrder = "asc";
+    }
     this.loadMembers();
   }
 
