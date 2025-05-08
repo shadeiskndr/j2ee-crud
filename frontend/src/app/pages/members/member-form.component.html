@@ -1,0 +1,133 @@
+<div class="flex items-center justify-center min-h-[60vh]">
+  <form
+    (ngSubmit)="onSubmit()"
+    class="bg-surface-0 dark:bg-surface-900 p-8 rounded-2xl shadow-lg border border-surface-200 dark:border-surface-700 w-full max-w-xl flex flex-col gap-6"
+    autocomplete="off"
+  >
+    <h2
+      class="text-2xl font-semibold text-center text-surface-900 dark:text-surface-100"
+    >
+      {{ isEdit ? "Edit Member" : "Add Member" }}
+    </h2>
+
+    <p-iftalabel>
+      <input
+        pInputText
+        id="name"
+        name="name"
+        [(ngModel)]="member.name"
+        required
+        class="w-full"
+      />
+      <label for="name">Name</label>
+    </p-iftalabel>
+
+    <p-iftalabel>
+      <input
+        pInputText
+        id="email"
+        name="email"
+        [(ngModel)]="member.email"
+        type="email"
+        required
+        class="w-full"
+      />
+      <label for="email">Email</label>
+    </p-iftalabel>
+
+    <p-iftalabel>
+      <p-inputmask
+        id="ic_number"
+        name="ic_number"
+        [(ngModel)]="member.ic_number"
+        [mask]="icMask"
+        required
+        styleClass="w-full"
+        autocomplete="off"
+        (ngModelChange)="onIcNumberInput($event)"
+      ></p-inputmask>
+      <label for="ic_number">IC Number</label>
+    </p-iftalabel>
+
+    <p-iftalabel>
+      <p-select
+        [options]="genderOptions"
+        [(ngModel)]="member.gender"
+        name="gender"
+        inputId="gender"
+        required
+        class="w-full"
+        optionLabel="label"
+        optionValue="value"
+      ></p-select>
+      <label for="gender">Gender</label>
+    </p-iftalabel>
+
+    <p-iftalabel>
+      <p-datepicker
+        [(ngModel)]="dateOfBirth"
+        inputId="date_of_birth"
+        name="date_of_birth"
+        showIcon
+        iconDisplay="input"
+        required
+        fluid
+        dateFormat="yy/mm/dd"
+        disabled
+      ></p-datepicker>
+      <label for="date_of_birth">Date of Birth</label>
+    </p-iftalabel>
+
+    <p-iftalabel>
+      <p-autocomplete
+        [(ngModel)]="selectedPostcode"
+        [forceSelection]="true"
+        [suggestions]="filteredPostcodes"
+        (completeMethod)="filterPostcode($event)"
+        (onSelect)="onPostcodeSelect($event.value)"
+        optionLabel="postcode"
+        inputId="postcode"
+        name="postcode"
+        required
+        fluid
+        field="postcode"
+        [dropdown]="true"
+      ></p-autocomplete>
+      <label for="postcode">Postcode</label>
+    </p-iftalabel>
+
+    <p-iftalabel>
+      <input
+        pInputText
+        id="town"
+        name="town"
+        [value]="town"
+        class="w-full"
+        disabled
+      />
+      <label for="town">Town</label>
+    </p-iftalabel>
+
+    <div *ngIf="error" class="text-red-500 text-sm text-center">
+      {{ error }}
+    </div>
+    <div *ngIf="success" class="text-green-600 text-sm text-center">
+      {{ success }}
+    </div>
+
+    <button
+      pButton
+      type="submit"
+      [label]="isEdit ? 'Update Member' : 'Add Member'"
+      class="w-full"
+      [disabled]="
+        !member.name ||
+        !member.email ||
+        !member.ic_number ||
+        !member.gender ||
+        !dateOfBirth ||
+        !selectedPostcode
+      "
+    ></button>
+  </form>
+</div>
