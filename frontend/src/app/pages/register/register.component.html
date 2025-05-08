@@ -21,9 +21,13 @@
           autocomplete="username"
           required
           class="w-full"
+          (blur)="validateUsername()"
         />
       </p-iconfield>
       <label for="username">Username</label>
+      <div *ngIf="usernameError" class="text-red-500 text-xs mt-1">
+        {{ usernameError }}
+      </div>
     </p-iftalabel>
 
     <p-iftalabel>
@@ -38,9 +42,13 @@
           autocomplete="email"
           required
           class="w-full"
+          (blur)="validateEmail()"
         />
       </p-iconfield>
       <label for="email">Email</label>
+      <div *ngIf="emailError" class="text-red-500 text-xs mt-1">
+        {{ emailError }}
+      </div>
     </p-iftalabel>
 
     <p-iftalabel>
@@ -51,12 +59,16 @@
           id="password"
           name="password"
           [(ngModel)]="password"
-          type="password"
+          [type]="passwordVisible ? 'text' : 'password'"
           autocomplete="password"
           required
           class="w-full"
         />
-        <p-inputicon class="pi pi-eye" />
+        <p-inputicon
+          [ngClass]="passwordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"
+          style="cursor: pointer"
+          (click)="passwordVisible = !passwordVisible"
+        />
       </p-iconfield>
       <label for="password">Password</label>
     </p-iftalabel>
@@ -69,12 +81,16 @@
           id="confirmPassword"
           name="confirmPassword"
           [(ngModel)]="confirmPassword"
-          type="password"
+          [type]="confirmPasswordVisible ? 'text' : 'password'"
           autocomplete="confirmPassword"
           required
           class="w-full"
         />
-        <p-inputicon class="pi pi-eye" />
+        <p-inputicon
+          [ngClass]="confirmPasswordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"
+          style="cursor: pointer"
+          (click)="confirmPasswordVisible = !confirmPasswordVisible"
+        />
       </p-iconfield>
       <label for="confirmPassword">Confirm Password</label>
     </p-iftalabel>
@@ -84,7 +100,14 @@
       type="submit"
       label="Register"
       class="w-full"
-      [disabled]="!username || !email || !password || !confirmPassword"
+      [disabled]="
+        !username ||
+        !email ||
+        !password ||
+        !confirmPassword ||
+        usernameError ||
+        emailError
+      "
     ></button>
 
     <div *ngIf="error" class="text-red-500 text-sm text-center">

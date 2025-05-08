@@ -33,11 +33,49 @@ export class RegisterComponent {
   error = "";
   success = "";
 
+  // Password visibility toggles
+  passwordVisible = false;
+  confirmPasswordVisible = false;
+
+  // Validation errors
+  usernameError = "";
+  emailError = "";
+
   constructor(private auth: AuthService, public router: Router) {}
+
+  validateUsername() {
+    // Username: required, 3-20 chars, alphanumeric/underscore only
+    if (!this.username) {
+      this.usernameError = "Username is required";
+    } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(this.username)) {
+      this.usernameError =
+        "Username must be 3-20 characters, letters, numbers, or underscores";
+    } else {
+      this.usernameError = "";
+    }
+  }
+
+  validateEmail() {
+    // Email: required, valid format
+    if (!this.email) {
+      this.emailError = "Email is required";
+    } else if (
+      !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(this.email)
+    ) {
+      this.emailError = "Invalid email format";
+    } else {
+      this.emailError = "";
+    }
+  }
 
   register() {
     this.error = "";
     this.success = "";
+    this.validateUsername();
+    this.validateEmail();
+    if (this.usernameError || this.emailError) {
+      return;
+    }
     if (this.password !== this.confirmPassword) {
       this.error = "Passwords do not match";
       return;
@@ -54,7 +92,8 @@ export class RegisterComponent {
           setTimeout(() => this.router.navigate(["/login"]), 1500);
         },
         error: (err) =>
-          (this.error = err.error?.message || "Registration failed"),
+          (this.error =
+            err.error?.error || err.error?.message || "Registration failed"),
       });
   }
 

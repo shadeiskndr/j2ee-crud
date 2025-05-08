@@ -30,13 +30,16 @@ export class LoginComponent {
   password = "";
   error = "";
 
+  passwordVisible = false;
+
   constructor(private auth: AuthService, public router: Router) {}
 
   login() {
     this.error = "";
     this.auth.login(this.username, this.password).subscribe({
       next: () => this.router.navigate(["/dashboard"]),
-      error: (err) => (this.error = err.error?.message || "Login failed"),
+      error: (err) =>
+        (this.error = err.error?.error || err.error?.message || "Login failed"),
     });
   }
 

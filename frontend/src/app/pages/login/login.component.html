@@ -34,12 +34,16 @@
           id="password"
           name="password"
           [(ngModel)]="password"
-          type="password"
+          [type]="passwordVisible ? 'text' : 'password'"
           autocomplete="password"
           required
           class="w-full"
         />
-        <p-inputicon class="pi pi-eye" />
+        <p-inputicon
+          [ngClass]="passwordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"
+          style="cursor: pointer"
+          (click)="passwordVisible = !passwordVisible"
+        />
       </p-iconfield>
       <label for="password">Password</label>
     </p-iftalabel>
