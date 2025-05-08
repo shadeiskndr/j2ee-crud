@@ -33,7 +33,6 @@ import { debounceTime, Subject, Subscription } from "rxjs";
 })
 export class MemberFormComponent implements OnInit, OnDestroy {
   member: Partial<Member> = {};
-  postcodes: Postcode[] = [];
   filteredPostcodes: Postcode[] = [];
   selectedPostcode?: Postcode;
   isEdit = false;
@@ -61,36 +60,12 @@ export class MemberFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // Debounced postcode search
-    this.subscriptions.push(
-      this.postcodeSearch$.pipe(debounceTime(1000)).subscribe((query) => {
-        this.postcodeService
-          .getPostcodes({ search: query, pageSize: 10 })
-          .subscribe((data) => {
-            this.filteredPostcodes = data.postcodes;
-          });
-      })
-    );
-
     // Debounced IC Number → DOB autofill
     this.subscriptions.push(
       this.icNumberChange$.pipe(debounceTime(1000)).subscribe((ic) => {
         this.setDateOfBirthFromIC(ic);
       })
     );
-
-    // Load all postcodes for edit mode (to set selectedPostcode)
-    this.postcodeService.getPostcodes({ pageSize: 1000 }).subscribe((data) => {
-      this.postcodes = data.postcodes;
-      if (this.isEdit && this.member.postcode) {
-        this.selectedPostcode = this.postcodes.find(
-          (p) => p.postcode === this.member.postcode
-        );
-        if (this.selectedPostcode) {
-          this.town = this.selectedPostcode.town;
-        }
-      }
-    });
 
     const id = this.route.snapshot.paramMap.get("id");
     if (id) {
@@ -99,7 +74,6 @@ export class MemberFormComponent implements OnInit, OnDestroy {
         this.member = { ...m };
         this.dateOfBirth = m.date_of_birth ? new Date(m.date_of_birth) : null;
         this.town = m.town || "";
-        // selectedPostcode will be set after postcodes are loaded
       });
     }
   }
@@ -134,9 +108,12 @@ export class MemberFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Debounced postcode search
   filterPostcode(event: { query: string }) {
-    this.postcodeSearch$.next(event.query);
+    this.postcodeService
+      .getPostcodes({ search: event.query, pageSize: 20 })
+      .subscribe((data) => {
+        this.filteredPostcodes = data.postcodes;
+      });
   }
 
   // When postcode is selected, set town
