@@ -48,7 +48,6 @@ export class MemberFormComponent implements OnInit, OnDestroy {
   ];
 
   // Debounce subjects and subscriptions
-  private postcodeSearch$ = new Subject<string>();
   private icNumberChange$ = new Subject<string>();
   private subscriptions: Subscription[] = [];
 
@@ -64,6 +63,7 @@ export class MemberFormComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.icNumberChange$.pipe(debounceTime(1000)).subscribe((ic) => {
         this.setDateOfBirthFromIC(ic);
+        this.setGenderFromIC(ic);
       })
     );
 
@@ -105,6 +105,18 @@ export class MemberFormComponent implements OnInit, OnDestroy {
       if (!isNaN(dob.getTime())) {
         this.dateOfBirth = dob;
       }
+    }
+  }
+
+  setGenderFromIC(ic: string) {
+    const value: string = ic.replace(/-/g, "");
+    if (value.length > 10) {
+      const gender =
+        parseInt(value.charAt(value.length - 2), 10) % 2 === 0
+          ? "Female"
+          : "Male";
+      this.member.gender = gender;
+      console.log("Gender from IC:", gender);
     }
   }
 
