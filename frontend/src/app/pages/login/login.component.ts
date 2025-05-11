@@ -29,6 +29,7 @@ export class LoginComponent {
   username = "";
   password = "";
   error = "";
+  isLoading = false;
 
   passwordVisible = false;
 
@@ -36,10 +37,17 @@ export class LoginComponent {
 
   login() {
     this.error = "";
+    this.isLoading = true;
+
     this.auth.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(["/dashboard"]),
-      error: (err) =>
-        (this.error = err.error?.error || err.error?.message || "Login failed"),
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(["/dashboard"]);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.error = err.error?.error || err.error?.message || "Login failed";
+      },
     });
   }
 
