@@ -95,20 +95,22 @@
       <label for="confirmPassword">Confirm Password</label>
     </p-iftalabel>
 
-    <button
-      pButton
+    <p-button
       type="submit"
       label="Register"
-      class="w-full"
+      styleClass="w-full"
       [disabled]="
         !username ||
         !email ||
         !password ||
         !confirmPassword ||
         usernameError ||
-        emailError
+        emailError ||
+        isLoading
       "
-    ></button>
+      [loading]="isLoading"
+      loadingIcon="pi pi-spinner pi-spin"
+    ></p-button>
 
     <div *ngIf="error" class="text-red-500 text-sm text-center">
       {{ error }}

@@ -32,6 +32,7 @@ export class RegisterComponent {
   confirmPassword = "";
   error = "";
   success = "";
+  isLoading = false;
 
   // Password visibility toggles
   passwordVisible = false;
@@ -80,6 +81,9 @@ export class RegisterComponent {
       this.error = "Passwords do not match";
       return;
     }
+
+    this.isLoading = true;
+
     this.auth
       .register({
         username: this.username,
@@ -88,12 +92,15 @@ export class RegisterComponent {
       })
       .subscribe({
         next: () => {
+          this.isLoading = false;
           this.success = "Registration successful! Redirecting to login...";
           setTimeout(() => this.router.navigate(["/login"]), 1500);
         },
-        error: (err) =>
-          (this.error =
-            err.error?.error || err.error?.message || "Registration failed"),
+        error: (err) => {
+          this.isLoading = false;
+          this.error =
+            err.error?.error || err.error?.message || "Registration failed";
+        },
       });
   }
 
