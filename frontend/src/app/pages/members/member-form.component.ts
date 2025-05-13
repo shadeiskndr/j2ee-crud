@@ -38,6 +38,7 @@ export class MemberFormComponent implements OnInit, OnDestroy {
   isEdit = false;
   error = "";
   success = "";
+  isLoading = false;
   dateOfBirth: Date | null = null;
   icMask = "999999-99-9999";
   town: string = "";
@@ -74,6 +75,20 @@ export class MemberFormComponent implements OnInit, OnDestroy {
         this.member = { ...m };
         this.dateOfBirth = m.date_of_birth ? new Date(m.date_of_birth) : null;
         this.town = m.town || "";
+
+        // Fetch the complete postcode data
+        if (m.postcode) {
+          this.postcodeService
+            .getPostcodes({ search: m.postcode, pageSize: 1 })
+            .subscribe((data) => {
+              const foundPostcode = data.postcodes.find(
+                (p: Postcode) => p.postcode === m.postcode
+              );
+              if (foundPostcode) {
+                this.selectedPostcode = foundPostcode;
+              }
+            });
+        }
       });
     }
   }
@@ -110,13 +125,12 @@ export class MemberFormComponent implements OnInit, OnDestroy {
 
   setGenderFromIC(ic: string) {
     const value: string = ic.replace(/-/g, "");
-    if (value.length > 10) {
+    if (value.length > 11) {
       const gender =
-        parseInt(value.charAt(value.length - 2), 10) % 2 === 0
+        parseInt(value.charAt(value.length - 1), 10) % 2 === 0
           ? "Female"
           : "Male";
       this.member.gender = gender;
-      console.log("Gender from IC:", gender);
     }
   }
 
@@ -137,6 +151,7 @@ export class MemberFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.error = "";
     this.success = "";
+    this.isLoading = true;
 
     let dobString = "";
     if (this.dateOfBirth) {
@@ -161,18 +176,26 @@ export class MemberFormComponent implements OnInit, OnDestroy {
     if (this.isEdit && this.member.id) {
       this.memberService.updateMember(this.member.id, payload).subscribe({
         next: () => {
+          this.isLoading = false;
           this.success = "Member updated!";
           setTimeout(() => this.router.navigate(["/members"]), 1000);
         },
-        error: (err) => (this.error = err.error?.message || "Update failed"),
+        error: (err) => {
+          this.isLoading = false;
+          this.error = err.error?.message || "Update failed";
+        },
       });
     } else {
       this.memberService.createMember(payload).subscribe({
         next: () => {
+          this.isLoading = false;
           this.success = "Member created!";
           setTimeout(() => this.router.navigate(["/members"]), 1000);
         },
-        error: (err) => (this.error = err.error?.message || "Create failed"),
+        error: (err) => {
+          this.isLoading = false;
+          this.error = err.error?.message || "Create failed";
+        },
       });
     }
   }

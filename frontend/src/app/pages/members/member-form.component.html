@@ -115,19 +115,21 @@
       {{ success }}
     </div>
 
-    <button
-      pButton
+    <p-button
       type="submit"
       [label]="isEdit ? 'Update Member' : 'Add Member'"
-      class="w-full"
       [disabled]="
         !member.name ||
         !member.email ||
         !member.ic_number ||
         !member.gender ||
         !dateOfBirth ||
-        !selectedPostcode
+        !selectedPostcode ||
+        isLoading
       "
-    ></button>
+      [loading]="isLoading"
+      loadingIcon="pi pi-spinner pi-spin"
+      styleClass="w-full"
+    ></p-button>
   </form>
 </div>
