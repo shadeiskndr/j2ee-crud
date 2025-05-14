@@ -60,16 +60,6 @@ import { RippleModule } from "primeng/ripple";
       </div>
       <!-- Center: Navigation -->
       <div class="flex-1 flex justify-center">
-        <!-- Hamburger for small screens -->
-        <button
-          *ngIf="isSmallScreen && isLoggedIn()"
-          type="button"
-          class="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-100 dark:hover:bg-surface-800 transition-all text-surface-900 dark:text-surface-0"
-          (click)="visible = true"
-          aria-label="Open menu"
-        >
-          <i class="pi pi-bars text-base"></i>
-        </button>
         <!-- Menubar for large screens -->
         <p-menubar
           *ngIf="!isSmallScreen && isLoggedIn()"
@@ -79,10 +69,25 @@ import { RippleModule } from "primeng/ripple";
       </div>
       <!-- Right: Controls -->
       <div class="flex items-center gap-2 flex-shrink-0">
-        <button
+        <!-- Hamburger for small screens -->
+        <p-button
+          *ngIf="isSmallScreen && isLoggedIn()"
           type="button"
-          class="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-100 dark:hover:bg-surface-800 transition-all text-surface-900 dark:text-surface-0 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0 dark:focus-visible:ring-offset-surface-950"
+          icon="pi pi-bars"
+          (click)="visible = true"
+          [rounded]="true"
+          [text]="true"
+          styleClass="w-10 h-10"
+          aria-label="Open menu"
+        />
+
+        <p-button
+          type="button"
           (click)="toggleDarkMode()"
+          [rounded]="true"
+          [text]="true"
+          styleClass="w-10 h-10"
+          aria-label="Toggle dark mode"
         >
           <i
             class="pi text-base"
@@ -91,7 +96,8 @@ import { RippleModule } from "primeng/ripple";
               'pi-sun': !isDarkMode()
             }"
           ></i>
-        </button>
+        </p-button>
+
         <div class="relative">
           <p-button
             pStyleClass="@next"
@@ -107,16 +113,18 @@ import { RippleModule } from "primeng/ripple";
           />
           <app-config class="hidden" />
         </div>
-        <button
+
+        <p-button
           *ngIf="isLoggedIn()"
           type="button"
-          class="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-100 dark:hover:bg-red-800 transition-all text-red-600 dark:text-red-300 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0 dark:focus-visible:ring-offset-surface-950"
+          icon="pi pi-sign-out"
           (click)="logout()"
+          [rounded]="true"
+          [text]="true"
+          styleClass="w-5 h-5 !text-red-600 dark:!text-red-300 hover:!bg-red-100 dark:hover:!bg-red-800"
           aria-label="Logout"
           title="Logout"
-        >
-          <i class="pi pi-sign-out text-base"></i>
-        </button>
+        />
       </div>
     </div>
 

@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { authGuard } from "./guards/auth.guard";
+import { loggedInGuard } from "./guards/logged-in.guard";
 
 export const routes: Routes = [
   { path: "", redirectTo: "dashboard", pathMatch: "full" },
@@ -39,6 +40,7 @@ export const routes: Routes = [
     path: "login",
     loadComponent: () =>
       import("./pages/login/login.component").then((m) => m.LoginComponent),
+    canActivate: [loggedInGuard],
   },
   {
     path: "register",
@@ -46,6 +48,7 @@ export const routes: Routes = [
       import("./pages/register/register.component").then(
         (m) => m.RegisterComponent
       ),
+    canActivate: [loggedInGuard],
   },
   { path: "**", redirectTo: "dashboard" },
 ];
