@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
@@ -9,6 +9,7 @@ import { Member } from "../../models/member.model";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { InputTextModule } from "primeng/inputtext";
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-members-list",
@@ -24,7 +25,7 @@ import { InputTextModule } from "primeng/inputtext";
     InputTextModule,
   ],
 })
-export class MembersListComponent implements OnInit {
+export class MembersListComponent implements OnInit, OnDestroy {
   members: Member[] = [];
   totalRecords = 0;
   first = 0;
@@ -36,10 +37,33 @@ export class MembersListComponent implements OnInit {
   sortField: string = "join_date";
   sortOrder: "asc" | "desc" = "desc";
 
+  // Debounce subjects
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
   constructor(private memberService: MemberService, private router: Router) {}
 
   ngOnInit() {
     this.loadMembers();
+    this.setupSearchDebounce();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchDebounce() {
+    this.searchSubject
+      .pipe(
+        debounceTime(300), // Wait 300ms after user stops typing
+        distinctUntilChanged(), // Only emit if search term changed
+        takeUntil(this.destroy$) // Clean up subscription on destroy
+      )
+      .subscribe(() => {
+        this.first = 0; // Reset to first page when searching
+        this.loadMembers();
+      });
   }
 
   loadMembers() {
@@ -70,9 +94,9 @@ export class MembersListComponent implements OnInit {
     this.loadMembers();
   }
 
-  onSearch() {
-    this.first = 0;
-    this.loadMembers();
+  onSearchChange(searchTerm: string) {
+    this.search = searchTerm;
+    this.searchSubject.next(searchTerm);
   }
 
   onSort(field: string) {

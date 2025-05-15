@@ -9,7 +9,7 @@
       <input
         pInputText
         [(ngModel)]="search"
-        (ngModelChange)="onSearch()"
+        (ngModelChange)="onSearchChange($event)"
         placeholder="Search members..."
         class="p-inputtext-sm md:w-auto! w-full!"
       />
