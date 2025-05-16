@@ -1,0 +1,68 @@
+frontend
+├── .gitignore
+├── .postcssrc.json
+├── angular.json
+├── Dockerfile
+├── nginx.conf
+├── package-lock.json
+├── package.json
+├── proxy.conf.json
+├── public
+│   └── favicon.ico
+├── README.md
+├── src
+│   ├── app
+│   │   ├── app.component.html
+│   │   ├── app.component.scss
+│   │   ├── app.component.spec.ts
+│   │   ├── app.component.ts
+│   │   ├── app.config.ts
+│   │   ├── app.routes.ts
+│   │   ├── components
+│   │   │   ├── app.config.ts
+│   │   │   ├── app.footer.ts
+│   │   │   ├── app.topbar.ts
+│   │   │   └── dashboard
+│   │   │       ├── productoverviewwidget.ts
+│   │   │       ├── recentactivitywidget.ts
+│   │   │       ├── salestrendwidget.ts
+│   │   │       └── statswidget.ts
+│   │   ├── guards
+│   │   │   ├── auth.guard.ts
+│   │   │   └── logged-in.guard.ts
+│   │   ├── interceptors
+│   │   │   └── auth.interceptor.ts
+│   │   ├── models
+│   │   │   ├── member.model.ts
+│   │   │   ├── postcode.model.ts
+│   │   │   ├── state.model.ts
+│   │   │   └── user.model.ts
+│   │   ├── pages
+│   │   │   ├── dashboard
+│   │   │   │   ├── dashboard.component.html
+│   │   │   │   └── dashboard.component.ts
+│   │   │   ├── login
+│   │   │   │   ├── login.component.html
+│   │   │   │   └── login.component.ts
+│   │   │   ├── members
+│   │   │   │   ├── member-form.component.html
+│   │   │   │   ├── member-form.component.ts
+│   │   │   │   ├── members-list.component.html
+│   │   │   │   └── members-list.component.ts
+│   │   │   └── register
+│   │   │       ├── register.component.html
+│   │   │       └── register.component.ts
+│   │   └── service
+│   │       ├── auth.service.ts
+│   │       ├── layout.service.ts
+│   │       ├── member.service.ts
+│   │       ├── postcode.service.ts
+│   │       └── state.service.ts
+│   ├── assets
+│   │   └── logo.png
+│   ├── index.html
+│   ├── main.ts
+│   └── styles.scss
+├── tsconfig.app.json
+├── tsconfig.json
+└── tsconfig.spec.json

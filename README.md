@@ -1,6 +1,6 @@
-# J2EE Membership Management System
+# J2EE + Angular 19 Membership Management System
 
-A comprehensive Java EE web application for managing member records with full CRUD functionality. This project demonstrates the implementation of MVC architecture using Jakarta EE technologies, JSP, Servlets, and MySQL.
+A comprehensive Jakarta EE and Angular 19 web application for managing member records with full CRUD functionality. This project demonstrates the implementation of MVC architecture using Jakarta EE technologies, Servlets for REST API with JSON, Angular 19, and MySQL.
 
 ---
 
@@ -8,6 +8,7 @@ A comprehensive Java EE web application for managing member records with full CR
 
 - **Member Management:** Create, read, update, and delete member records.
 - **User Authentication:** JWT-based login and registration for API access.
+- **Password Reset:** Email-based password reset with verification codes via MailerSend.
 - **Password Security:** User passwords are stored as Argon2 hashes.
 - **Dual Interface:** Web UI and REST API endpoints.
 - **MVC Architecture:** Clean separation of concerns with Model, View, Controller pattern.
@@ -25,6 +26,7 @@ A comprehensive Java EE web application for managing member records with full CR
 - **Frontend:** JSP, HTML, CSS, Angular (served via Nginx)
 - **API:** RESTful JSON API
 - **Authentication:** JWT (via [jjwt](https://github.com/jwtk/jjwt)), Argon2 password hashing (via [argon2-jvm](https://github.com/phxql/argon2-jvm))
+- **Email Service:** MailerSend for password reset notifications
 
 ---
 
@@ -52,14 +54,19 @@ The application follows a layered architecture:
 - Docker and Docker Compose
 - JDK 21 (for development)
 - Maven (for development)
+- MailerSend account (for password reset emails)
 
 ### Environment Setup
 
 Create a `.env` file in the project root using the `.env.example` as a template.  
-**New required variables:**
+**Required variables:**
 
 - `JWT_SECRET` — a secure, random string for signing JWTs.
 - `JWT_EXPIRATION` — (optional) JWT expiration in milliseconds (default: 86400000 for 24h).
+- `MAILERSEND_API_TOKEN` — your MailerSend API token.
+- `MAILERSEND_FROM_EMAIL` — verified sender email address.
+- `MAILERSEND_FROM_NAME` — sender name for emails.
+- `PASSWORD_RESET_EXPIRATION` — (optional) reset code expiration in milliseconds (default: 900000 for 15min).
 
 Example `.env`:
 
@@ -70,6 +77,10 @@ MYSQL_USER=youruser
 MYSQL_PASSWORD=yourpw
 JWT_SECRET=your-very-long-random-secret-key-here
 JWT_EXPIRATION=86400000
+MAILERSEND_API_TOKEN=mlsn.your_api_token_here
+MAILERSEND_FROM_EMAIL=noreply@yourdomain.com
+MAILERSEND_FROM_NAME=Your App Name
+PASSWORD_RESET_EXPIRATION=900000
 ```
 
 ### Running the Application
@@ -114,6 +125,17 @@ CREATE TABLE IF NOT EXISTS members (
     town VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS password_resets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    verification_code VARCHAR(10) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS states (
     state_code VARCHAR(5) PRIMARY KEY,
     state_name VARCHAR(100) NOT NULL
@@ -153,6 +175,44 @@ CREATE TABLE IF NOT EXISTS postcodes (
   Response:
   ```json
   { "token": "<JWT token>" }
+  ```
+
+### Password Reset
+
+- **Initiate Reset:**  
+  `POST /api/auth/password-reset/initiate`
+
+  ```json
+  {
+    "email": "alice@example.com"
+  }
+  ```
+
+- **Verify Code:**  
+  `POST /api/auth/password-reset/verify-code`
+
+  ```json
+  {
+    "verificationCode": "123456"
+  }
+  ```
+
+  Response:
+
+  ```json
+  {
+    "message": "Verification code is valid",
+    "resetToken": "<reset-token>"
+  }
+  ```
+
+- **Reset Password:**  
+  `POST /api/auth/password-reset/reset`
+  ```json
+  {
+    "resetToken": "<reset-token>",
+    "newPassword": "newpassword123"
+  }
   ```
 
 ### JWT-Protected Endpoints
@@ -267,47 +327,28 @@ Supports pagination, search, and sorting.
 
 ---
 
-## Automated API Testing
+## Email Configuration
 
-A sample shell script using `curl` is provided to test registration, login, and protected endpoints:
+### MailerSend Setup
 
-```bash
-#!/bin/bash
+1. **Create MailerSend Account:**
 
-API_URL="http://localhost:8080/api"
-USERNAME="apitestuser"
-EMAIL="apitestuser@example.com"
-PASSWORD="SuperSecret123"
+   - Sign up at [mailersend.com](https://www.mailersend.com)
+   - Verify your domain in the dashboard
+   - Add required DNS records (SPF, DKIM, DMARC)
 
-echo "=== Registering user ==="
-curl -s -X POST "$API_URL/auth/register" \
-  -H "Content-Type: application/json" \
-  -d "{\"username\":\"$USERNAME\",\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\"}"
-echo -e "\n"
+2. **Generate API Token:**
 
-echo "=== Logging in ==="
-LOGIN_RESPONSE=$(curl -s -X POST "$API_URL/auth/login" \
-  -H "Content-Type: application/json" \
-  -d "{\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\"}")
+   - Go to Settings → API Tokens
+   - Create token with "Email" permissions
+   - Add to your `.env` file
 
-echo "$LOGIN_RESPONSE"
-TOKEN=$(echo "$LOGIN_RESPONSE" | grep -oP '(?<=\"token\":\")[^\"]+')
-
-if [ -z "$TOKEN" ]; then
-  echo "Login failed or token not found."
-  exit 1
-fi
-
-echo -e "\n=== Accessing protected /api/members endpoint ==="
-curl -s -X GET "$API_URL/members" \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json"
-echo -e "\n"
-
-echo "=== Testing unauthorized access (should fail) ==="
-curl -s -X GET "$API_URL/members"
-echo -e "\n"
-```
+3. **Configure Environment:**
+   ```env
+   MAILERSEND_API_TOKEN=mlsn.your_token_here
+   MAILERSEND_FROM_EMAIL=noreply@yourdomain.com
+   MAILERSEND_FROM_NAME=Your App Name
+   ```
 
 ---
 
@@ -336,5 +377,6 @@ echo -e "\n"
 - **Front Controller Pattern:** Centralized request handling via Servlets.
 - **JWT Authentication:** Stateless, secure API authentication.
 - **Password Hashing:** Secure storage of user passwords using Argon2.
+- **Email Service Integration:** Abstracted email sending with MailerSend.
 
 ---

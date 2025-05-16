@@ -1,0 +1,110 @@
+backend
+├── db-init
+│   ├── 01-init.sql
+│   ├── 02-states_data.sql
+│   ├── 03-postcodes_data.sql
+│   ├── 04-password_resets.sql
+│   └── 05-mock-members.sql
+├── Dockerfile
+├── pom.xml
+├── scripts
+│   ├── test_api.sh
+│   └── test_password_reset.sh
+├── src
+│   └── main
+│       ├── java
+│       │   └── com
+│       │       └── example
+│       │           ├── controller
+│       │           │   ├── AuthApiServlet.java
+│       │           │   ├── MemberApiServlet.java
+│       │           │   ├── MemberServlet.java
+│       │           │   ├── PasswordResetApiServlet.java
+│       │           │   ├── PostcodeApiServlet.java
+│       │           │   └── StateApiServlet.java
+│       │           ├── dao
+│       │           │   ├── MemberDAO.java
+│       │           │   ├── MemberDAOImpl.java
+│       │           │   ├── PasswordResetDAO.java
+│       │           │   ├── PasswordResetDAOImpl.java
+│       │           │   ├── PostcodeDAO.java
+│       │           │   ├── PostcodeDAOImpl.java
+│       │           │   ├── StateDAO.java
+│       │           │   ├── StateDAOImpl.java
+│       │           │   ├── UserDAO.java
+│       │           │   └── UserDAOImpl.java
+│       │           ├── model
+│       │           │   ├── Member.java
+│       │           │   ├── PasswordReset.java
+│       │           │   ├── Postcode.java
+│       │           │   ├── State.java
+│       │           │   └── User.java
+│       │           ├── service
+│       │           │   ├── EmailService.java
+│       │           │   ├── MailerSendEmailService.java
+│       │           │   ├── MemberService.java
+│       │           │   ├── MemberServiceImpl.java
+│       │           │   ├── PasswordResetService.java
+│       │           │   ├── PostcodeService.java
+│       │           │   ├── PostcodeServiceImpl.java
+│       │           │   ├── StateService.java
+│       │           │   └── StateServiceImpl.java
+│       │           └── util
+│       │               ├── AuthUtil.java
+│       │               ├── DBUtil.java
+│       │               ├── JwtUtil.java
+│       │               ├── PasswordResetUtil.java
+│       │               └── PasswordUtil.java
+│       └── webapp
+│           ├── index.jsp
+│           └── WEB-INF
+│               ├── views
+│               │   ├── add-member.jsp
+│               │   ├── edit-member.jsp
+│               │   └── list-members.jsp
+│               └── web.xml
+└── target
+    ├── classes
+    │   └── com
+    │       └── example
+    │           ├── controller
+    │           │   ├── AuthApiServlet.class
+    │           │   ├── MemberApiServlet.class
+    │           │   ├── MemberServlet.class
+    │           │   ├── PasswordResetApiServlet.class
+    │           │   ├── PostcodeApiServlet.class
+    │           │   └── StateApiServlet.class
+    │           ├── dao
+    │           │   ├── MemberDAO.class
+    │           │   ├── MemberDAOImpl.class
+    │           │   ├── PasswordResetDAO.class
+    │           │   ├── PasswordResetDAOImpl.class
+    │           │   ├── PostcodeDAO.class
+    │           │   ├── PostcodeDAOImpl.class
+    │           │   ├── StateDAO.class
+    │           │   ├── StateDAOImpl.class
+    │           │   ├── UserDAO.class
+    │           │   └── UserDAOImpl.class
+    │           ├── model
+    │           │   ├── Member.class
+    │           │   ├── PasswordReset.class
+    │           │   ├── Postcode.class
+    │           │   ├── State.class
+    │           │   └── User.class
+    │           ├── service
+    │           │   ├── EmailService.class
+    │           │   ├── MailerSendEmailService.class
+    │           │   ├── MemberService.class
+    │           │   ├── MemberServiceImpl.class
+    │           │   ├── PasswordResetService.class
+    │           │   ├── PostcodeService.class
+    │           │   ├── PostcodeServiceImpl.class
+    │           │   ├── StateService.class
+    │           │   └── StateServiceImpl.class
+    │           └── util
+    │               ├── AuthUtil.class
+    │               ├── DBUtil.class
+    │               ├── JwtUtil.class
+    │               ├── PasswordResetUtil.class
+    │               └── PasswordUtil.class
+    └── test-classes
