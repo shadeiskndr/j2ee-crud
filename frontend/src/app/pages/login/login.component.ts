@@ -55,4 +55,9 @@ export class LoginComponent {
     event.preventDefault();
     this.router.navigate(["/register"]);
   }
+
+  goToForgotPassword(event: Event) {
+    event.preventDefault();
+    this.router.navigate(["/forgot-password"]);
+  }
 }

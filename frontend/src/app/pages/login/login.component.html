@@ -26,27 +26,38 @@
       <label for="username">Username</label>
     </p-iftalabel>
 
-    <p-iftalabel>
-      <p-iconfield>
-        <p-inputicon class="pi pi-lock" />
-        <input
-          pInputText
-          id="password"
-          name="password"
-          [(ngModel)]="password"
-          [type]="passwordVisible ? 'text' : 'password'"
-          autocomplete="password"
-          required
-          class="w-full"
-        />
-        <p-inputicon
-          [ngClass]="passwordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"
-          style="cursor: pointer"
-          (click)="passwordVisible = !passwordVisible"
-        />
-      </p-iconfield>
-      <label for="password">Password</label>
-    </p-iftalabel>
+    <div class="flex flex-col gap-1">
+      <p-iftalabel>
+        <p-iconfield>
+          <p-inputicon class="pi pi-lock" />
+          <input
+            pInputText
+            id="password"
+            name="password"
+            [(ngModel)]="password"
+            [type]="passwordVisible ? 'text' : 'password'"
+            autocomplete="password"
+            required
+            class="w-full"
+          />
+          <p-inputicon
+            [ngClass]="passwordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"
+            style="cursor: pointer"
+            (click)="passwordVisible = !passwordVisible"
+          />
+        </p-iconfield>
+        <label for="password">Password</label>
+      </p-iftalabel>
+
+      <div class="text-right">
+        <a
+          href="#"
+          (click)="goToForgotPassword($event)"
+          class="text-sm text-surface-500 dark:text-surface-400 hover:underline hover:text-primary transition-colors cursor-pointer"
+          >Forgot Password?</a
+        >
+      </div>
+    </div>
 
     <p-button
       type="submit"

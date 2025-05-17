@@ -50,5 +50,29 @@ export const routes: Routes = [
       ),
     canActivate: [loggedInGuard],
   },
+  {
+    path: "forgot-password",
+    loadComponent: () =>
+      import("./pages/forgot-password/forgot-password.component").then(
+        (m) => m.ForgotPasswordComponent
+      ),
+    canActivate: [loggedInGuard],
+  },
+  {
+    path: "verify-code",
+    loadComponent: () =>
+      import("./pages/verify-code/verify-code.component").then(
+        (m) => m.VerifyCodeComponent
+      ),
+    canActivate: [loggedInGuard],
+  },
+  {
+    path: "reset-password",
+    loadComponent: () =>
+      import("./pages/reset-password/reset-password.component").then(
+        (m) => m.ResetPasswordComponent
+      ),
+    canActivate: [loggedInGuard],
+  },
   { path: "**", redirectTo: "dashboard" },
 ];

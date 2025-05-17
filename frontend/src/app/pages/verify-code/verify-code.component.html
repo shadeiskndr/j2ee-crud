@@ -1,0 +1,89 @@
+<div class="flex items-center justify-center min-h-[60vh]">
+  <form
+    (ngSubmit)="verifyCode()"
+    class="card bg-surface-0 dark:bg-surface-900 p-8 rounded-2xl shadow-2xl border border-surface-200 dark:border-surface-700 w-full max-w-md flex flex-col gap-6"
+    autocomplete="off"
+  >
+    <div class="text-center mb-2">
+      <h2
+        class="text-3xl font-bold text-surface-900 dark:text-surface-100 mb-2"
+      >
+        Verify Code
+      </h2>
+      <p class="text-surface-600 dark:text-surface-400 text-sm">
+        Enter the verification code sent to
+        <span class="font-semibold text-primary">{{ email }}</span>
+      </p>
+    </div>
+
+    <p-iftalabel>
+      <p-iconfield>
+        <p-inputicon class="pi pi-key" />
+        <input
+          pInputText
+          id="verificationCode"
+          name="verificationCode"
+          [(ngModel)]="verificationCode"
+          autocomplete="one-time-code"
+          required
+          class="w-full text-center tracking-widest"
+          placeholder="Enter 6-digit code"
+          maxlength="6"
+        />
+      </p-iconfield>
+      <label for="verificationCode">Verification Code</label>
+    </p-iftalabel>
+
+    <p-button
+      type="submit"
+      label="Verify Code"
+      [disabled]="!verificationCode || verificationCode.length < 6 || isLoading"
+      [loading]="isLoading"
+      loadingIcon="pi pi-spinner pi-spin"
+      styleClass="w-full"
+    ></p-button>
+
+    <div *ngIf="error" class="text-red-500 text-sm text-center">
+      <i class="pi pi-exclamation-triangle mr-2"></i>
+      {{ error }}
+    </div>
+
+    <div *ngIf="success" class="text-green-500 text-sm text-center">
+      <i class="pi pi-check-circle mr-2"></i>
+      {{ success }}
+    </div>
+
+    <div
+      class="text-center text-sm text-surface-600 dark:text-surface-400 space-y-2"
+    >
+      <div>
+        Didn't receive the code?
+        <a
+          href="#"
+          (click)="resendCode()"
+          class="text-primary font-semibold hover:underline transition-colors cursor-pointer"
+          [class.pointer-events-none]="isLoading"
+          [class.opacity-50]="isLoading"
+          >Resend Code</a
+        >
+      </div>
+      <div>
+        Wrong email?
+        <a
+          href="#"
+          (click)="goToForgotPassword($event)"
+          class="text-primary font-semibold hover:underline transition-colors cursor-pointer"
+          >Change Email</a
+        >
+      </div>
+      <div>
+        <a
+          href="#"
+          (click)="goToLogin($event)"
+          class="text-primary font-semibold hover:underline transition-colors cursor-pointer"
+          >Back to Login</a
+        >
+      </div>
+    </div>
+  </form>
+</div>

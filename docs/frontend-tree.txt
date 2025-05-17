@@ -41,6 +41,9 @@ frontend
 │   │   │   ├── dashboard
 │   │   │   │   ├── dashboard.component.html
 │   │   │   │   └── dashboard.component.ts
+│   │   │   ├── forgot-password
+│   │   │   │   ├── forgot-password.component.html
+│   │   │   │   └── forgot-password.component.ts
 │   │   │   ├── login
 │   │   │   │   ├── login.component.html
 │   │   │   │   └── login.component.ts
@@ -49,13 +52,21 @@ frontend
 │   │   │   │   ├── member-form.component.ts
 │   │   │   │   ├── members-list.component.html
 │   │   │   │   └── members-list.component.ts
-│   │   │   └── register
-│   │   │       ├── register.component.html
-│   │   │       └── register.component.ts
+│   │   │   ├── register
+│   │   │   │   ├── register.component.html
+│   │   │   │   └── register.component.ts
+│   │   │   ├── reset-password
+│   │   │   │   ├── reset-password.component.html
+│   │   │   │   └── reset-password.component.ts
+│   │   │   └── verify-code
+│   │   │       ├── verify-code.component.html
+│   │   │       └── verify-code.component.ts
 │   │   └── service
 │   │       ├── auth.service.ts
 │   │       ├── layout.service.ts
 │   │       ├── member.service.ts
+│   │       ├── password-reset-state.service.ts
+│   │       ├── password-reset.service.ts
 │   │       ├── postcode.service.ts
 │   │       └── state.service.ts
 │   ├── assets
